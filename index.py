@@ -155,9 +155,5 @@ def main_handler(event=None, context=None):
         PushTemplate()
 
 if __name__ == '__main__':
-    now_time = int(time.strftime(
-       '%H%M',
-        time.localtime(time.time() + 8 * 60 * 60 + time.timezone)
-     ))
-    print(now_time)
-    #main_handler("","")
+
+    main_handler("","")

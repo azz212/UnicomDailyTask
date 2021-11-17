@@ -1,10 +1,10 @@
 {
-  "手机号-1": {
-    "areaname": "区名",
-    "cityname": "城市名",
-    "contactaddr": "详细地址",
-    "contactor": "收货人姓名",
-    "provname": "省份名"
+  "18608003959": {
+    "areaname": "郫都区",
+    "cityname": "成都",
+    "contactaddr": "西源大道1902号",
+    "contactor": "赵开辉",
+    "provname": "四川"
   },
   "手机号-2": {
     "areaname": "区名",
