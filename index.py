@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-import time
+
 from threading import Thread
 from activity.unicom.dailySign import SigninApp
 from activity.unicom.integralTask import IntegralTask
@@ -28,7 +28,7 @@ from activity.womail.scratchable import Scratchable
 from activity.womail.puzzle2 import Puzzle2
 from activity.push.pushlog import PushLog
 
-
+import time
 def Template(cls):
     # 联通手机号 服务密码 配置 (支持多账号)
     ts = []
@@ -81,15 +81,15 @@ def main_handler(event=None, context=None):
         腾讯云函数每15分钟执行一次
     """
 
-    #now_time = int(time.strftime(
-    #    '%H%M',
-    #    time.localtime(time.time() + 8 * 60 * 60 + time.timezone)
-    #))
+    now_time = int(time.strftime(
+        '%H%M',
+        time.localtime(time.time() + 8 * 60 * 60 + time.timezone)
+    ))
     DEBUG = False
 
 
-    now_time=16000
-    nowdebug=True
+    #now_time=16000
+    nowdebug=False
 
     # 沃阅读活动
     if now_time in range(600, 800) or DEBUG:  # 7次
@@ -155,6 +155,9 @@ def main_handler(event=None, context=None):
         PushTemplate()
 
 if __name__ == '__main__':
-
-
-    main_handler("","")
+    now_time = int(time.strftime(
+       '%H%M',
+        time.localtime(time.time() + 8 * 60 * 60 + time.timezone)
+     ))
+    print(now_time)
+    #main_handler("","")
