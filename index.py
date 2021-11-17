@@ -85,7 +85,7 @@ def main_handler(event=None, context=None):
         '%H%M',
         time.localtime(time.time() + 8 * 60 * 60 + time.timezone)
     ))
-    DEBUG = False
+    DEBUG = True
 
 
     #now_time=16000
