@@ -205,7 +205,7 @@ class SuperSimpleTask(UnicomClient):
             task=tasks['data']
             if task['achieve']<task['allocation']:
                 print('当前完成{0}'.format(task['achieve']))
-                if task['expireTime']<task['curTime']:
+                if task['expireTime']<=task['curTime']:
                     print('可以继续完成任务')
                     result=self.getPrize()
                     if result['status']=='0000':

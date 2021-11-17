@@ -91,28 +91,36 @@ def main_handler(event=None, context=None):
     #now_time=16000
     nowdebug=False
 
-    # 沃阅读活动
-    if now_time in range(600, 800) or DEBUG:  # 7次
+    # 沃阅读活动 取消阅读任务
+    woyuedu=False
+
+    if (now_time in range(600, 800) or DEBUG) and woyuedu :  # 7次
         Template(LuckDraw)
         Template(OpenBook)
-    if now_time in range(600, 730) or DEBUG:  # 5次
+        pass
+    if (now_time in range(600, 730) or DEBUG) and woyuedu:  # 5次
         Template(ThanksGiving)
-    if now_time in range(800, 830) or DEBUG:  # 1次
+        pass
+    if (now_time in range(800, 830) or DEBUG) and woyuedu:  # 1次
         Template(ReadLuchDraw)
-    if now_time in range(830, 900) or DEBUG:  # 自动领取奖品
+        pass
+    if (now_time in range(830, 900) or DEBUG) and woyuedu:  # 自动领取奖品
         Template(Prize)
+        pass
 
     # 沃学习活动
-    if now_time in range(900, 1100) or DEBUG:
+    woxuexi=False
+    if (now_time in range(900, 1100) or DEBUG) and woxuexi:
         Template(ZSMHAct)  # 7
         Template(XxdggAct)  # 8
         Template(WzsbzAct)  # 6
         Template(BxwmAct)  # 5
-    if now_time in range(900, 930) or DEBUG:
+    if (now_time in range(900, 930) or DEBUG) and woxuexi:
         Template(Stdthd)
 
     # 沃邮箱活动
-    if now_time in range(1000, 1010) or now_time in range(1300, 1310) or DEBUG:
+    woyouxiang=False
+    if (now_time in range(1000, 1010) or now_time in range(1300, 1310) or DEBUG) and woyouxiang:
         WXTemplate(DailySign)
         WXTemplate(Puzzle2)
         WXTemplate(Scratchable)
@@ -129,7 +137,8 @@ def main_handler(event=None, context=None):
         Template(WatchAddFlow)
 
     # 赚积分外卖购物任务---这个非法
-    if now_time in range(900, 930) or DEBUG:
+    waimai=False
+    if (now_time in range(900, 930) or DEBUG) and waimai:
         Template(SignerTask)
         Template(ZJFWeiBo)
         Template(QianDao11)
