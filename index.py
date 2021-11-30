@@ -13,6 +13,8 @@ from activity.unicom.blindBox import BlindBox
 from activity.unicom.unicomSignerTask import SignerTask
 from activity.unicom.zhuanjifenWeiBo import ZJFWeiBo
 from activity.unicom.qiandao11 import QianDao11
+from activity.unicom.wotree import Wotree
+
 from activity.woread.luckdraw import LuckDraw
 from activity.woread.openbook import OpenBook
 from activity.woread.readluchdraw import ReadLuchDraw
@@ -85,11 +87,11 @@ def main_handler(event=None, context=None):
         '%H%M',
         time.localtime(time.time() + 8 * 60 * 60 + time.timezone)
     ))
-    DEBUG = True
+    DEBUG = False
 
 
-    #now_time=16000
-    nowdebug=False
+    now_time=16000
+    nowdebug=True
 
     # 沃阅读活动 取消阅读任务
     woyuedu=False
@@ -145,7 +147,7 @@ def main_handler(event=None, context=None):
         Template(QianDao11)
 
     # 联通签到页积分任务
-    if now_time in range(800, 1600) or DEBUG or nowdebug:
+    if now_time in range(800, 1600) or DEBUG :
         Template(SuperSimpleTask)
 
     # 联通积分翻倍任务
@@ -159,6 +161,10 @@ def main_handler(event=None, context=None):
         Template(TurnCard)
         Template(TurnTable)
         Template(ZhuaWaWa)
+    # 联通沃之树
+
+    if now_time in range(900, 1100) or DEBUG or  nowdebug:
+        Template(Wotree)
 
     # 消息推送
     if now_time in range(1130, 1140) or now_time in range(1530, 1540) or DEBUG:
