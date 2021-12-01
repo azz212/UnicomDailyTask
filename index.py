@@ -35,8 +35,8 @@ def Template(cls):
     # 联通手机号 服务密码 配置 (支持多账号)
     ts = []
     for mobile, password in [
-         ('18608003959', '811123'),
-         #('手机号', '服务密码'),
+
+         ('手机号', '服务密码'),#todo替换成自己的
     ]:
         ts.append(Thread(target=cls(mobile, password).run))
     for t in ts:

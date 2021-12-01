@@ -1,13 +1,14 @@
 # UnicomDailyTask
-联通日常任务 腾讯云函数定时执行(若需要积分任务,使用华为云函数工作流,阿里、腾讯云函数ip在联通积分获取接口上被限制)
-
+联通日常任务 服务器定时执行（建议间隔2-3小时运行一次，视频每隔2个小时可再次完成）
 + 需搭建数据存储服务接口 [pythonanywhere仓库](https://github.com/rhming/pythonanywhere)
-+ 沃阅读活动
-+ 沃学习活动
-+ 沃邮箱活动
++ 沃阅读活动（不建议运行）
++ 沃学习活动（不建议运行）
++ 沃邮箱活动（不建议运行）
 + 联通日常任务
 + 联通签到页积分任务
 + 联通积分翻倍任务
++ 看视频得花费（新增）
++ 奥运签到积分（注意使用）
 
 ### 部分配置文件说明
 ```
@@ -29,27 +30,3 @@
 > ![image](https://user-images.githubusercontent.com/49028484/133170503-f8ec2681-e7db-4de7-9246-142a541397dd.png)
 
 
-### 云函数基本使用
-+ 腾讯云函数执行环境选择python3.6 上传[UnicomDailyTask.zip](https://github.com/rhming/UnicomDailyTask/releases/download/1.0/UnicomDailyTask.zip)到云函数
-
-+ 华为云函数工作流运行语言python3.6 
-+ 上传[UnicomDailyTask_Dependency_Package.zip](https://github.com/rhming/UnicomDailyTask/releases/download/1.0/UnicomDailyTask_Dependency_Package.zip)到创建依赖包
-> ![image](https://user-images.githubusercontent.com/49028484/135639814-21803aff-1bd1-431e-adda-43243643bc00.png)
-+ 上传[UnicomDailyTask_Code.zip](https://github.com/rhming/UnicomDailyTask/releases/download/1.0/UnicomDailyTask_Code.zip)到函数工作流  
-> ![image](https://user-images.githubusercontent.com/49028484/135639935-b371a3ba-de47-448c-bc64-2f33e37f689f.png)
-+ 选择依赖包代码(已经上传创建的依赖包)
-> ![image](https://user-images.githubusercontent.com/49028484/135701797-245b02a9-1cba-45d7-9c0b-56a29af3ad22.png)
-### 云函数配置
-+ 触发配置
-> 腾讯云函数
->> ![image](https://user-images.githubusercontent.com/49028484/132980589-59cd80dd-be5e-4535-92b0-38b4c35b2ca5.png)
---- ---
-> 华为云函数
->> ![image](https://user-images.githubusercontent.com/49028484/135640314-395134c8-b32c-4f25-bc2b-3a30d9285dc1.png)
-+ 环境配置
-> 腾讯云函数
->> ![image](https://user-images.githubusercontent.com/49028484/132981224-2b93c0b2-4be7-4745-a440-d58c61f96598.png)
---- ---
-> 华为云函数
->> ![image](https://user-images.githubusercontent.com/49028484/135640363-3f42e111-de16-4298-9a7c-e41ad6e60493.png)
-# UnicomDailyTask

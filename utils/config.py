@@ -4,18 +4,18 @@ import base64
 # 项目根目录
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))).replace('\\', '/')
 
-# 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
+# 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID(这个自己填写，
 deviceIds = {
-    '18608003959': '866130048857757',#866130048857757
+    'XXXXX': 'XXXX',#
     #'mobile-2': 'imei-2',
 }
 
-# 数据存储接口
-data_storage_server_url = 'https://huihui321.pythonanywhere.com/'  # https://huihui321.pythonanywhere.com/
+# 数据存储接口 todo
+data_storage_server_url = 'https://XXXXXXXX.pythonanywhere.com/'  # https://XXX.pythonanywhere.com/
 
-# 数据存储接口授权配置
-username = 'huihui321'  # 账户
-password = 'asdf1234'  # 密码
+# 数据存储接口授权配置 todo
+username = ''  # 账户
+password = ''  # 密码
 Authorization = 'Basic ' + base64.b64encode(
     ':'.join([username, password]).encode('utf8')
 ).decode('utf8')
