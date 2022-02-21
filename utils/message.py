@@ -130,7 +130,7 @@ class Message:
 
     def run(self):
         try:
-            from sendNotify import send
+            from .sendNotify import send
             send(self.subject, self.content.replace('\n', '\n\n'))
         except Exception as err:
             print(str(err))
