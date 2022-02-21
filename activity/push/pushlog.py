@@ -13,19 +13,19 @@ class PushLog(Common):
 
     def run(self):
         for account in self.accounts:
-            account = unquote(account)
-            self.mobile = account
+            account = unquote(account[0])
+            self.mobile = account[0]
             for record in [
                 'SigninAppRecord', 'SuperSimpleTaskRecord',
                 'WatchAddFlowRecord', 'WoReadRecord',
                 'WoLearnRecord', 'WoMailRecord'
             ]:
-                if account.isdigit() and record == 'WoMailRecord':
+                if self.mobile.isdigit() and record == 'WoMailRecord':
                     continue
-                if not account.isdigit() and record != 'WoMailRecord':
+                if not self.mobile.isdigit() and record != 'WoMailRecord':
                     continue
-                self.message += f'{account}{record}[{self.now_date}]'.center(64, '-') + '\n'
-                msg = self.readCookie(f'{account}{record}')
+                self.message += f'{self.mobile}{record}[{self.now_date}]'.center(64, '-') + '\n'
+                msg = self.readCookie(f'{self.mobile}{record}')
                 if not msg:
                     msg = "未获取到日志"
                 if isinstance(msg, dict):

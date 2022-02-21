@@ -29,15 +29,22 @@ from activity.womail.dailyTask import DailySign
 from activity.womail.scratchable import Scratchable
 from activity.womail.puzzle2 import Puzzle2
 from activity.push.pushlog import PushLog
-
+import json
 import time
+account_json = json.load(open('utils\\account.json'))
+    #print(account_json)
+account=[]
+for key in account_json.keys():
+    # print(key)
+    # print(account_json[key])
+    account.append((key, account_json[key]))
 def Template(cls):
     # 联通手机号 服务密码 配置 (支持多账号)
     ts = []
-    for mobile, password in [
-        ('18608003959', '811123'),
-         #('手机号', '服务密码'),#todo替换成自己的
-    ]:
+
+    global  account
+
+    for mobile, password in account:
         ts.append(Thread(target=cls(mobile, password).run))
     for t in ts:
         t.start()
@@ -70,12 +77,9 @@ def PushTemplate():
     # utils/config.py 推送配置
     # 填写参与活动任务的账号
     # 不需要推送 可以不填
-    PushLog([
-        # "联通手机号-1",
-        # "联通手机号-2",
-        # "沃邮箱mobile-1",
-        # "沃邮箱mobile-2",
-    ]).run()
+    global account
+
+    PushLog(account).run()
 
 
 def main_handler(event=None, context=None):
@@ -171,5 +175,7 @@ def main_handler(event=None, context=None):
         PushTemplate()
 
 if __name__ == '__main__':
+    PushTemplate()
 
-    main_handler("","")
+
+    #main_handler("","")

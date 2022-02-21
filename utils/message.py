@@ -131,6 +131,8 @@ class Message:
     def run(self):
         try:
             from .sendNotify import send
+            print(self.subject)
+            print(self.content)
             send(self.subject, self.content.replace('\n', '\n\n'))
         except Exception as err:
             print(str(err))
