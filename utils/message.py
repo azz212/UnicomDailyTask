@@ -129,6 +129,13 @@ class Message:
             print(e)
 
     def run(self):
+        try:
+            from sendNotify import send
+            send(self.subject, self.content.replace('\n', '\n\n'))
+        except Exception as err:
+            print(str(err))
+            print("无推送文件")
+
         if self.token:
             self.pushplus()
         if self.msg_from and self.password and self.msg_to:
