@@ -175,7 +175,7 @@ def main_handler(event=None, context=None):
         PushTemplate()
 
 if __name__ == '__main__':
-    #PushTemplate()
+    PushTemplate()
 
 
     main_handler("","")
