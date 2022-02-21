@@ -28,9 +28,11 @@ class UnicomClient(Common):
             "user-agent": "okhttp/4.4.0"
         })
         self.global_config = self.readCookie(self.mobile + "WoGame")
-        if not isinstance(self.global_config, dict) or not self.global_config.get('cookie', ''):
+        if not isinstance(self.global_config, dict) or not self.global_config.get('cookie', '')\
+                or 'cookie' not in self.global_config or 'd_deviceCode'  not in self.global_config['cookie']:
             self.login()
         else:
+
             self.deviceId = self.global_config['cookie']['d_deviceCode']
             self.session.cookies.update(self.global_config['cookie'])
         if not (self.session.cookies.get('jwt', False) and self.session.cookies.get('ecs_token', False)):

@@ -77,12 +77,20 @@ class Common(object):
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"
                 }
             )
-            result = resp.json()
-            if result["msg"]:
-                data = result["data"]
-                Common.local_cookie_cache[key] = data[key]
-                return data[key]
+            if resp.status_code==404:
+
+                print("pythonanywhere访问失败，请更新网站信息")
+                return ""
+            elif resp.status_code==200:
+                result = resp.json()
+                if result["msg"]:
+                    data = result["data"]
+                    Common.local_cookie_cache[key] = data[key]
+                    return data[key]
+                else:
+                    return ''
             else:
+                print("pythonanywhere访问失败，请更新网站信息")
                 return ''
         except Exception as e:
             print('readCookie', e)
@@ -115,11 +123,18 @@ class Common(object):
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"
                 }
             )
-            result = resp.json()
-            # print('更新local_cookie_cache')
-            Common.local_cookie_cache[key] = result['data'][key]
-            result['data'] = '...'
-            print(result)
+            if resp.status_code==404:
+                print("pythonanywhere访问失败，请更新网站信息")
+                return ""
+            elif resp.status_code==200:
+                result = resp.json()
+                # print('更新local_cookie_cache')
+                Common.local_cookie_cache[key] = result['data'][key]
+                result['data'] = '...'
+                print(result)
+            else:
+                print("pythonanywhere访问失败，请更新网站信息")
+                return ""
         except Exception as e:
             print('saveCookie', e)
             if retry > 0:
