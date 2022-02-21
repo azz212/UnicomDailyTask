@@ -1,21 +1,35 @@
 import os
 import base64
-
+import json
 # 项目根目录
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))).replace('\\', '/')
 
 # 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
-deviceIds = {
-    '18608003959': '866130048857757',#866130048857757
+#deviceIds = {
+#    '186XXXX': '123123',#12313
     #'mobile-2': 'imei-2',
-}
+#}
+
+with open(BASE_DIR + '/utils/account.json', 'r', encoding='utf8') as fp:
+    account_json = json.loads(fp.read())
+    #print(account_json)
+
+account=[]
+for key in account_json.keys():
+    # print(key)
+    # print(account_json[key])
+    account.append((key, account_json[key]['password']))
 
 # 数据存储接口
-data_storage_server_url = 'https://huihui321.pythonanywhere.com/'  # https://huihui321.pythonanywhere.com/
+with open(BASE_DIR + '/utils/pythonanywhere.json', 'r', encoding='utf8') as fp:
+    pythonanywhere = json.loads(fp.read())
+    #print(account_json)
+
+data_storage_server_url = 'https://{0}.pythonanywhere.com/'.format(pythonanywhere['username'])  # https://123123.pythonanywhere.com/
 
 # 数据存储接口授权配置
-username = 'huihui321'  # 账户
-password = 'asdf1234'  # 密码
+username = pythonanywhere['username']  # 账户
+password = pythonanywhere['password']  # 密码
 Authorization = 'Basic ' + base64.b64encode(
     ':'.join([username, password]).encode('utf8')
 ).decode('utf8')

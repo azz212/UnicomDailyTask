@@ -5,7 +5,7 @@ import execjs
 import requests
 from random import choices
 from utils.common import Common
-from utils.config import BASE_DIR, deviceIds
+from utils.config import BASE_DIR,account_json
 from utils.toutiao_sdk import getSign
 
 
@@ -16,7 +16,9 @@ class UnicomClient(Common):
         self.mobile = mobile
         self.password = password
         self.version = "android@8.0805"
-        self.deviceId = deviceIds.get(self.mobile, '') or self.getDeviceId
+        infos = account_json.get(self.mobile, '') or self.getDeviceId
+        # 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
+        self.deviceId=infos['IMEI']
         self.useragent = "Mozilla/5.0 (Linux; Android 8.1.0; MI 8 SE Build/OPM1.171019.019; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/68.0.3440.91 Mobile Safari/537.36; unicom{version:%s,desmobile:%s};devicetype{deviceBrand:Xiaomi,deviceModel:MI 8 SE};{yw_code:}" % (
             self.version,
             self.mobile,

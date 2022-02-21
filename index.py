@@ -31,21 +31,16 @@ from activity.womail.puzzle2 import Puzzle2
 from activity.push.pushlog import PushLog
 import json
 import time
-account_json = json.load(open('utils\\account.json'))
-    #print(account_json)
-account=[]
-for key in account_json.keys():
-    # print(key)
-    # print(account_json[key])
-    account.append((key, account_json[key]))
+import os
+from utils.config import account_json
 def Template(cls):
     # 联通手机号 服务密码 配置 (支持多账号)
     ts = []
 
-    global  account
 
-    for mobile, password in account:
-        ts.append(Thread(target=cls(mobile, password).run))
+
+    for key in account_json.keys():
+        ts.append(Thread(target=cls(key, account_json[key]['password']).run))
     for t in ts:
         t.start()
     for t in ts:
@@ -177,5 +172,7 @@ def main_handler(event=None, context=None):
 if __name__ == '__main__':
     #PushTemplate()
 
+    #print(aa)
+    #print(aa['IMEI'])
 
     main_handler("","")
