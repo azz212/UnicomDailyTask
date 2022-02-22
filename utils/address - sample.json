@@ -1,0 +1,16 @@
+{
+  "186XXXXXX123": {
+    "areaname": "XX区",
+    "cityname": "成都",
+    "contactaddr": "XXXXX号",
+    "contactor": "张三",
+    "provname": "湖北"
+  },
+  "手机号-2": {
+    "areaname": "区名",
+    "cityname": "城市名",
+    "contactaddr": "详细地址",
+    "contactor": "收货人姓名",
+    "provname": "省份名"
+  }
+}
