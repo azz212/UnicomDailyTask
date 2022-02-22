@@ -35,7 +35,10 @@ class TurnTable(UnicomClient):
         resp = self.session.post(url=url, data=data)
         data = resp.json()
         print(json.dumps(data))
-        return data['data']['playCounts'], data['data']['useCount']
+        if data['msg']=='此游戏已下线' or data['code']==500:
+            return 0,5
+        else:
+            return data['data']['playCounts'], data['data']['useCount']
 
     def getPlayTimes(self):
         url = 'https://wxapp.msmds.cn/jplus/api/change/luck/draw/gift/v1/getPlayTimes'

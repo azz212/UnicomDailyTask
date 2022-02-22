@@ -32,7 +32,7 @@ from activity.push.pushlog import PushLog
 import json
 import time
 import os
-from utils.config import account_json
+from utils.config import account_json,account
 def Template(cls):
     # 联通手机号 服务密码 配置 (支持多账号)
     ts = []
@@ -86,7 +86,7 @@ def main_handler(event=None, context=None):
         '%H%M',
         time.localtime(time.time() + 8 * 60 * 60 + time.timezone)
     ))
-    DEBUG = False
+    DEBUG = True
 
 
     now_time=16000
@@ -154,11 +154,13 @@ def main_handler(event=None, context=None):
         Template(IntegralTask)
 
     # 联通签到页转盘抽卡任务
+    Turnenable =True#已经下线
     if now_time in range(900, 1100) or DEBUG:
         Template(SheggMachine)
         Template(BlindBox)
         Template(TurnCard)
-        Template(TurnTable)
+        if Turnenable:
+            Template(TurnTable)
         Template(ZhuaWaWa)
     # 联通沃之树
 

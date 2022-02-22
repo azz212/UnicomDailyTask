@@ -52,13 +52,17 @@ class QianDao11(UnicomClient):
         self.session.headers.update({
             "authorization": f"Bearer {token['access_token']}"
         })
-        task = [item for item in data['data']['task']['qiandao'] if item['isDangtian'] == 'true'] or [{}]
-        tiaozhan = data['data']['task'].get('tiaozhan', {})
-        """
-        [{'isDangtian': 'true', 'jifen': '10+', 'id': 2, 'isQiandao': 'true'}]
-        {'wanchengCount': 1, 'value': 300, 'key': 14, 'status': '0'}
-        """
-        return task[0], tiaozhan
+        if 'task' in data['data']:
+
+            task = [item for item in data['data']['task']['qiandao'] if item['isDangtian'] == 'true'] or [{}]
+            tiaozhan = data['data']['task'].get('tiaozhan', {})
+            """
+            [{'isDangtian': 'true', 'jifen': '10+', 'id': 2, 'isQiandao': 'true'}]
+            {'wanchengCount': 1, 'value': 300, 'key': 14, 'status': '0'}
+            """
+            return task[0], tiaozhan
+        else:
+            return None,None
 
     def getActivity(self):
         url = 'https://m.jf.10010.com/jf-yuech/api/gameResultV2/getActivitys?activityIds=Ac-jgg2'
@@ -120,19 +124,20 @@ class QianDao11(UnicomClient):
         to_url = f'https://m.jf.10010.com/jf-order/avoidLogin/forActive/dbeo&yw_code=&desmobile={self.mobile}&version={self.version}'
         self.openPlatLineNew(to_url)
         task, tiaozhan = self.freeLoginRock()
-        if task.get('isQiandao', 'true') == 'false':
-            self.startQianDao()
-        if tiaozhan.get('wanchengCount', -1) == -1:
-            self.startTiaoZhan()
-        if self.getActivity():
-            params = {
-                'activityId': 'Ac-jgg2',
-                'currentTimes': 1,
-                'type': '免费'
-            }
-            resultId, freeTimes, advertTimes = self.minusGameTimes(params)
-            if resultId:
-                self.luckDrawForPrize(resultId)
+        if task!=None:
+            if task.get('isQiandao', 'true') == 'false':
+                self.startQianDao()
+            if tiaozhan.get('wanchengCount', -1) == -1:
+                self.startTiaoZhan()
+            if self.getActivity():
+                params = {
+                    'activityId': 'Ac-jgg2',
+                    'currentTimes': 1,
+                    'type': '免费'
+                }
+                resultId, freeTimes, advertTimes = self.minusGameTimes(params)
+                if resultId:
+                    self.luckDrawForPrize(resultId)
 
 
 if __name__ == '__main__':
