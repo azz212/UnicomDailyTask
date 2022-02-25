@@ -36,6 +36,7 @@ class SuperSimpleTask(UnicomClient):
 
         resp = self.session.post(url=url)
         result = resp.json()
+        print(url)
         print(json.dumps(result, indent=4, ensure_ascii=False))
         paramsList = result
 
@@ -68,10 +69,14 @@ class SuperSimpleTask(UnicomClient):
         }
         resp = self.session.post(url=url, data=data)
         data = resp.json()
+        print(url)
         print(json.dumps(data))
         return data
 
     def getTask(self, floorMark):
+        '''
+        获取任务
+        '''
         url = 'https://act.10010.com/SigninApp/superSimpleTask/getTask'
         data = {
             'floorMark': floorMark  # superEasy bigRew
@@ -79,18 +84,28 @@ class SuperSimpleTask(UnicomClient):
         resp = self.session.post(url=url, data=data)
         data = resp.json()
         # print(json.dumps(data))
+        print(url)
         return data['data']
 
     def doTask(self, item):
-        print(item['title'])
+        '''
+        完成任务
+        '''
+        #modify 2022-02-25 add parameters actId taskType
+
         url = 'https://act.10010.com/SigninApp/simplyDotask/doTaskS'
+        #actId=AC20210917091707&taskId=21b24f8f38a74880a6f9073698af900a&taskType=1
         data = {
-            'taskId': item['taskId']
+            'taskId': item['taskId'],
+            'actId':item['actId'],
+            "taskType":item['taskType'],
         }
         resp = self.session.post(url=url, data=data)
         data = resp.json()
-        print(json.dumps(data))
+        print(item['title'])
         print(url)
+        print(json.dumps(data))
+
         return data['status']
 
     def accomplishDotaskOptions(self):
@@ -100,28 +115,40 @@ class SuperSimpleTask(UnicomClient):
         })
 
     def accomplishDotask(self, item, orderId=''):
+        '''
+        执行任务
+        '''
+        #{"actId":"AC20210917091707","taskId":"ebb46044474048308cd101a57e98dfff","systemCode":"QDQD","orderId":"6f282c4fbe58f73b9f0391c17e83114d","taskName":"看视频得话费红包","taskType":"1"}
+
         url = 'https://act.10010.com/SigninApp/simplyDotask/accomplishDotask'
         data = {
+            "actId": item['actId'],
             "taskId": item['taskId'],
             "systemCode": "QDQD",
-            "orderId": orderId
+            "orderId": orderId,
+            "taskName": item['title'],
+            "taskType": item['taskType'],
+
         }
         resp = self.session.post(url=url, json=data, headers={
             'Content-Type': 'application/json'
         })
         data = resp.json()
+        print(url)
         print(json.dumps(data))
 
     def receiveBenefits(self):
         url = 'https://act.10010.com/SigninApp/floorData/receiveBenefits'
         resp = self.session.post(url=url)
         data = resp.json()
+        print(url)
         print(json.dumps(data))
 
     def energy(self):
         url = 'https://act.10010.com/SigninApp/simplyDotask/energy'
         resp = self.session.post(url=url)
         data = resp.json()
+        print(url)
         print(json.dumps(data))
 
     def recordLog(self, log):
@@ -143,12 +170,14 @@ class SuperSimpleTask(UnicomClient):
                 continue
 
             print(json.dumps(item))
-            # add 202111-16 加任务
+            # add 2021-11-16 加任务
+            # add task
             if item['title'] in [
                 '去浏览积分商城', '兑换1次话费红包', '玩4次0元夺宝',
                 '玩3次转盘赢好礼', '玩3次套牛赢好礼', '玩3次扔球赢好礼',
                 '玩3次刮刮乐', '玩3次开心抓大奖', '看2次完整视频',
                 '完成下载参与斗地主游戏', '完成下载参与捕鱼游戏','参与双十一摇大奖','完成右上角气泡区21个定时任务','完成右上角气泡区31个定时任务'
+                '去浏览影视频道','看视频得话费红包'
             ] and int(item['achieve']) != int(item['allocation']) and item['btn'] not in ['倒计时','']:#倒计时没有按钮文字
                 print(item['title'])
                 print(int(item['allocation']) - int(item['achieve']))
@@ -156,7 +185,7 @@ class SuperSimpleTask(UnicomClient):
                     orderId = ''
                     self.accomplishDotaskOptions()
                     self.flushTime(1)
-                    if item['title'] == '看2次完整视频':
+                    if item['title'] == '看2次完整视频' or item['title'] == '看视频得话费红包' :
                         self.flushTime(randint(15, 20))
                         options = {
                             'arguments1': '',
@@ -182,6 +211,7 @@ class SuperSimpleTask(UnicomClient):
                     self.doTask(item)
                 #break
                 time.sleep(5)
+
 
         for item in self.getTask('bigRew'):
             if int(item['achieve']) == int(item['allocation']) and item['btn'] != '已完成':  # int(item['showStyle']) != 3:

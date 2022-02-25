@@ -139,13 +139,14 @@ def main_handler(event=None, context=None):
         pass
 
     # 赚积分外卖购物任务---这个非法
-    waimai=True
+    waimai=False #2022  该任务不存在了
     if (now_time in range(900, 930) or DEBUG) and waimai:
         Template(SignerTask)
         #Template(ZJFWeiBo)
         Template(QianDao11)
 
     # 联通签到页积分任务
+
     if now_time in range(800, 1600) or DEBUG :
         Template(SuperSimpleTask)
 
