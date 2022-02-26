@@ -72,26 +72,83 @@ class Wotree(UnicomClient):
         return data
 
     def getTask(self, floorMark):
-        url = 'https://act.10010.com/SigninApp/superSimpleTask/getTask'
+        #url = 'https://m.client.10010.com/mactivity/task/toolList.htm'
+        url='https://m.client.10010.com/mactivity/task/list.htm'
         data = {
-            'floorMark': floorMark  # superEasy bigRew
+            #'floorMark': floorMark  # superEasy bigRew
         }
-        resp = self.session.post(url=url, data=data)
-        data = resp.json()
-        # print(json.dumps(data))
-        return data['data']
-
-    def doTask(self, item):
-        print(item['title'])
-        url = 'https://act.10010.com/SigninApp/simplyDotask/doTaskS'
-        data = {
-            'taskId': item['taskId']
+        results= {
+            "msg": "查询任务成功",
+            "code": "0000",
+            "data": {
+                "taskListDTOS": [{
+                    "detailPicture": "https://m1.img.10010.com/resources/7188192A31B5AE06E41B64DA6D65A9B0/20191230/png/20191230174245.png",
+                    "isFinishTask": "0",
+                    "propId": "20190712600000001",
+                    "propImg": "https://m1.img.10010.com/resources/7188192A31B5AE06E41B64DA6D65A9B0/20191230/png/20191230174223.png",
+                    "propNum": "1",
+                    "sortContinent": "1",
+                    "taskDetails": "1、连续浇水7天，可获得一瓶杀虫剂&2、中间如果任务中断，将重新累计&3、领取奖励后，可以开启新的一轮连续浇水7天任务",
+                    "taskId": "0001",
+                    "taskNum": "7",
+                    "taskTitle": "连续浇水7天",
+                    "wateringNumber": "7"
+                }, {
+                    "detailPicture": "https://m1.img.10010.com/resources/7188192A31B5AE06E41B64DA6D65A9B0/20191230/png/20191230174316.png",
+                    "isFinishTask": "1",
+                    "propId": "20190712600000002",
+                    "propImg": "https://m1.img.10010.com/resources/7188192A31B5AE06E41B64DA6D65A9B0/20191230/png/20191230174329.png",
+                    "propNum": "1",
+                    "sortContinent": "2",
+                    "taskDetails": "1、每周一0点至每周日24点为一个任务周期&2、每周仅能领取一瓶好友专用杀虫剂&3、若在一个任务周期内未完成任务，下个任务周期，任务将重新开始&4、仅限给好友浇水",
+                    "taskId": "0002",
+                    "taskNum": "30",
+                    "taskTitle": "一周帮好友浇水30次",
+                    "wateringNumber": "0"
+                }, {
+                    "detailPicture": "https://m1.img.10010.com/resources/7188192A31B5AE06E41B64DA6D65A9B0/20191230/png/20191230174358.png",
+                    "isFinishTask": "1",
+                    "propId": "2019092300000001",
+                    "propImg": "https://m1.img.10010.com/resources/7188192A31B5AE06E41B64DA6D65A9B0/20191230/png/20191230174344.png",
+                    "propNum": "1",
+                    "sortContinent": "3",
+                    "taskDetails": "1、此任务为不限时任务&2、帮好友杀虫每满50条即可领取一瓶强力杀虫剂&3、领取奖励后，可以开启新的一轮帮好友杀虫50条任务&4、仅限帮好友杀虫",
+                    "taskId": "0003",
+                    "taskNum": "50",
+                    "taskTitle": "帮好友除虫50条",
+                    "wateringNumber": "0"
+                }, {
+                    "detailPicture": "https://m1.img.10010.com/resources/7188192A31B5AE06E41B64DA6D65A9B0/20191230/png/20191230174415.png",
+                    "isFinishTask": "1",
+                    "propId": "20191121000000",
+                    "propImg": "https://m1.img.10010.com/resources/7188192A31B5AE06E41B64DA6D65A9B0/20191230/png/20191230174426.png",
+                    "propNum": "1",
+                    "sortContinent": "4",
+                    "taskDetails": "1、此任务为不限时任务&2、每加10个好友即可领取一瓶防虫剂&3、领取奖励后，可以开启新的一轮加10个好友任务&4、同一个好友不可重复添加",
+                    "taskId": "0004",
+                    "taskNum": "10",
+                    "taskTitle": "加10个好友",
+                    "wateringNumber": "0"
+                }]
+            }
         }
         resp = self.session.post(url=url, data=data)
         data = resp.json()
         print(json.dumps(data))
+        return data['data']['taskList']
+
+    def doTask(self, item):
+        print(item['taskTitle'])
+        url = 'https://m.client.10010.com/mactivity/task/watchPage.htm'
+        data = {
+            'taskId': item['taskId']
+        }
+        resp = self.session.get(url=url, params=data)
+        resp = resp.json()
         print(url)
-        return data['status']
+        print(json.dumps(resp))
+
+        return resp
 
     def accomplishDotaskOptions(self):
         url = 'https://act.10010.com/SigninApp/simplyDotask/accomplishDotask'
@@ -142,36 +199,48 @@ class Wotree(UnicomClient):
         output = res['data']['flowChangeList']
         output += res['data']['shareFlowChangeList']
         return output
+    def get_task_finishelist(self):
+        index = self.session.post('https://m.client.10010.com/mactivity/arbordayJson/index.htm')
+        index.encoding = 'utf-8'
+        res = index.json()
+        output = res['data']['popList']
 
+        return output
     def run(self):
         # 领取4M流量*3
+        for task in self.getTask(''):
+            # return
+            #bug 如果视频时间未到，没有achieve 字段,则挑过次任务
+            if task['taskTitle']!='浏览有礼<span>+10</span>':
+                continue
+            if task['isFinishTask']=="0":
+                print('任务已完成{0}'.format(task['taskTitle']))
+                print(task)
+            else:
+                resp = self.doTask(task)
+                if resp['code']=='0000':
+                    print('OK')
+
+
+
         try:
-            flowList = self.get_woTree_glowList()
-            num = 1
+            flowList = self.get_task_finishelist()
             for flow in flowList:
                 # 这里会请求很长时间，发送即请求成功
-                flag = False
                 try:
-                    takeFlow = self.session.get(
-                        'https://m.client.10010.com/mactivity/flowData/takeFlow.htm?flowId=' + flow['id'], timeout=1)
+                    takeFlow = self.session.post(
+                        'https://m.client.10010.com/mactivity/arbordayJson/arbor/{0}/{1}/0/grow.htm'.format(flow['id'],flow['type']), timeout=1)
+                    resp=takeFlow.json()
+                    print(takeFlow.json())
+
+                    print('增加{0},当前培养值{1}'.format(resp['data']['addedValue'],resp['data']['trainValue']))
+
                 except Exception as e:
-                    flag = True
-                    print('【沃之树-领流量新】: 4M流量 x' + str(num))
-                # 等待1秒钟
-                time.sleep(1)
-                num = num + 1
-                if flag:
-                    continue
-                takeFlow.encoding = 'utf-8'
-                res1 = takeFlow.json()
-                if res1['code'] == '0000':
-                    print('【沃之树-领流量】: 4M流量 x' + str(num))
-                else:
-                    print('【沃之树-领流量】: 已领取过 x' + str(num))
-                # 等待1秒钟
-                time.sleep(1)
-                num = num + 1
+                    print(e)
             self.session.post('https://m.client.10010.com/mactivity/arbordayJson/getChanceByIndex.htm?index=0')
+            url='https://m.client.10010.com/mactivity/task/0001/accept.htm?taskFlag=812707'#获得道具任务
+
+
             # 浇水
             grow = self.session.post('https://m.client.10010.com/mactivity/arbordayJson/arbor/3/0/3/grow.htm')
             grow.encoding = 'utf-8'

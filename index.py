@@ -134,8 +134,9 @@ def main_handler(event=None, context=None):
 
 
     # 联通签到页看视频领流量
-    if now_time in range(800, 900) or DEBUG:
-        #Template(WatchAddFlow)
+    WatchAdd=False
+    if (now_time in range(800, 900) or DEBUG) and WatchAdd:
+        Template(WatchAddFlow)
         pass
 
     # 赚积分外卖购物任务---这个非法
@@ -155,8 +156,8 @@ def main_handler(event=None, context=None):
         Template(IntegralTask)
 
     # 联通签到页转盘抽卡任务
-    Turnenable =True#已经下线
-    if now_time in range(900, 1100) or DEBUG:
+    Turnenable =False#已经下线
+    if (now_time in range(900, 1100) or DEBUG) and Turnenable:
         Template(SheggMachine)
         Template(BlindBox)
         Template(TurnCard)
@@ -164,8 +165,8 @@ def main_handler(event=None, context=None):
             Template(TurnTable)
         Template(ZhuaWaWa)
     # 联通沃之树
-
-    if now_time in range(900, 1100) or DEBUG or  nowdebug:
+    Wotrees=False
+    if (now_time in range(900, 1100) or DEBUG) and   Wotrees:
         Template(Wotree)
 
     # 消息推送
@@ -177,5 +178,5 @@ if __name__ == '__main__':
 
     #print(aa)
     #print(aa['IMEI'])
-
+    #Template(Wotree)
     main_handler("","")
