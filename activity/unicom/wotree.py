@@ -211,12 +211,11 @@ class Wotree(UnicomClient):
         for task in self.getTask(''):
             # return
             #bug 如果视频时间未到，没有achieve 字段,则挑过次任务
-            if task['taskTitle']!='浏览有礼<span>+10</span>':
-                continue
             if task['isFinishTask']=="0":
                 print('任务已完成{0}'.format(task['taskTitle']))
                 print(task)
             else:
+                print('开始做任务')
                 resp = self.doTask(task)
                 if resp['code']=='0000':
                     print('OK')
@@ -241,24 +240,11 @@ class Wotree(UnicomClient):
             url='https://m.client.10010.com/mactivity/task/0001/accept.htm?taskFlag=812707'#获得道具任务
 
 
-            # 浇水
-            grow = self.session.post('https://m.client.10010.com/mactivity/arbordayJson/arbor/3/0/3/grow.htm')
-            grow.encoding = 'utf-8'
-            res2 = grow.json()
-            print('【沃之树-浇水】: 获得' + str(res2['data']['addedValue']) + '培养值')
-            time.sleep(1)
+
         except Exception as e:
 
-            print('【沃之树】: 错误，原因为: ' + str(e))
+            print('浇水 ' + str(e))
 
-        self.flushTime(randint(3, 5))
-        log = '[superEasy]\n'
-        for item in self.getTask('superEasy'):
-            log += f"{item['title']}:{item['btn']}---进度:{item['achieve']}/{item['allocation']}\n"
-        log += '[bigRew]\n'
-        for item in self.getTask('bigRew'):
-            log += f"{item['title']}:{item['btn']}---进度:{item['achieve']}/{item['allocation']}\n"
-        self.recordLog(log)
 
 
 
