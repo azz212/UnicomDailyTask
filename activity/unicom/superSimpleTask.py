@@ -5,7 +5,7 @@ from utils import jsonencode as json
 from utils.toutiao_reward import TouTiao
 from utils.unicomLogin import UnicomClient
 import time
-
+import datetime
 class SuperSimpleTask(UnicomClient):
     """
         签到页积分任务
@@ -172,15 +172,28 @@ class SuperSimpleTask(UnicomClient):
             print(json.dumps(item))
             # add 2021-11-16 加任务
             # add task
+
+
+
             if item['title'] in [
                 '去浏览积分商城', '兑换1次话费红包', '玩4次0元夺宝',
                 '玩3次转盘赢好礼', '玩3次套牛赢好礼', '玩3次扔球赢好礼',
                 '玩3次刮刮乐', '玩3次开心抓大奖', '看2次完整视频',
                 '完成下载参与斗地主游戏', '完成下载参与捕鱼游戏','参与双十一摇大奖','完成右上角气泡区21个定时任务','完成右上角气泡区31个定时任务',
                 '去浏览影视频道','看视频得话费红包'
-            ] and int(item['achieve']) != int(item['allocation']) and item['btn'] not in ['倒计时','']:#倒计时没有按钮文字
+            ] and int(item['achieve']) != int(item['allocation']) and item['btn'] not in ['']:#倒计时没有按钮文字
                 print(item['title'])
-                print(int(item['allocation']) - int(item['achieve']))
+                #如果倒计时即将结束，则sleep等待
+                if item['btn'] in ['倒计时']:
+                    expireTime = datetime.datetime.strptime(item['expireTime'], '%Y-%m-%d %H:%M:%S')
+                    curTime = datetime.datetime.strptime(item['curTime'], '%Y-%m-%d %H:%M:%S')
+                    diff = expireTime - curTime
+                    if diff.total_seconds() <= 120:
+                        time.sleep(diff.total_seconds()+1)
+                    else:
+                        continue
+
+                #print(int(item['allocation']) - int(item['achieve']))
                 for _ in range(int(item['allocation']) - int(item['achieve'])):
                     orderId = ''
                     self.accomplishDotaskOptions()

@@ -157,17 +157,15 @@ class Wotree(UnicomClient):
         })
 
     def accomplishDotask(self, item, orderId=''):
-        url = 'https://act.10010.com/SigninApp/simplyDotask/accomplishDotask'
+        url = 'https://m.client.10010.com/mactivity/arbordayJson/giveGrowChance.htm?videoId={0}'.format(orderId)
         data = {
-            "taskId": item['taskId'],
-            "systemCode": "QDQD",
-            "orderId": orderId
         }
         resp = self.session.post(url=url, json=data, headers={
             'Content-Type': 'application/json'
         })
         data = resp.json()
         print(json.dumps(data))
+        return data
 
     def receiveBenefits(self):
         url = 'https://act.10010.com/SigninApp/floorData/receiveBenefits'
@@ -190,6 +188,45 @@ class Wotree(UnicomClient):
             record.pop(k)
         record[self.now_date] = log
         self.saveCookie(f'{self.mobile}SuperSimpleTaskRecord', record)
+    def videoreward(self):
+        '''
+        看视频浇水
+        '''
+        item=""
+
+        orderId = ''
+        self.accomplishDotaskOptions()
+        self.flushTime(1)
+
+
+        options = {
+            'arguments1': '',
+            'arguments2': '',
+            'codeId': 946779474,
+            'channelName': 'android-签到超简单任务看视频-激励视频',
+            'remark': '简单任务-看视频得奖励',
+            'ecs_token': self.session.cookies.get('ecs_token')
+        }
+
+        orderId = self.toutiao.reward(options)
+        self.flushTime(randint(20, 25))
+
+        data = self.accomplishDotask(item, orderId)
+        if data['code']=='0009':# 当日已经赠送了机会了
+            return
+
+        try:
+            takeFlow = self.session.post('https://m.client.10010.com/mactivity/arbordayJson/arbor/3/0/3/grow.htm',timeout=1)
+            resp = takeFlow.json()
+            print(takeFlow.json())
+
+            print('增加{0},当前培养值{1}'.format(resp['data']['addedValue'], resp['data']['trainValue']))
+
+        except Exception as e:
+            print(e)
+
+    # self.flushTime(randint(60, 65))
+    # break
 
     # 获取沃之树首页，得到领流量的目标值
     def get_woTree_glowList(self):
@@ -207,6 +244,9 @@ class Wotree(UnicomClient):
 
         return output
     def run(self):
+        #视频浇水
+        self.videoreward()
+
         # 领取4M流量*3
         for task in self.getTask(''):
             # return
@@ -244,9 +284,6 @@ class Wotree(UnicomClient):
         except Exception as e:
 
             print('浇水 ' + str(e))
-
-
-
 
 
 if __name__ == '__main__':

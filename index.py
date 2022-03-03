@@ -165,7 +165,7 @@ def main_handler(event=None, context=None):
             Template(TurnTable)
         Template(ZhuaWaWa)
     # 联通沃之树，没啥用
-    Wotrees=False
+    Wotrees=True
     if (now_time in range(900, 1100) or DEBUG) and   Wotrees:
         Template(Wotree)
 
